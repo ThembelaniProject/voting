@@ -1,8 +1,7 @@
 from django.contrib import admin, messages
-from django.core.exceptions import ValidationError
 from django.utils import timezone
 
-from .models import Competition, DJ
+from .models import Competition, DJ, Vote
 
 
 @admin.register(DJ)
@@ -16,11 +15,15 @@ class DJAdmin(admin.ModelAdmin):
 
 @admin.register(Competition)
 class CompetitionAdmin(admin.ModelAdmin):
-    list_display = ("week_number", "dj_one", "dj_two", "status", "starts_at", "ends_at")
+    list_display = ("week_number", "dj_one", "dj_two", "status", "vote_count", "starts_at", "ends_at")
     list_filter = ("status",)
     search_fields = ("title", "dj_one__name", "dj_two__name")
     ordering = ("-week_number",)
     actions = ("open_voting", "close_voting", "complete_competition")
+
+    @admin.display(description="Recorded votes")
+    def vote_count(self, obj):
+        return obj.votes.count()
 
     @admin.action(description="Open voting for selected competition")
     def open_voting(self, request, queryset):
@@ -47,3 +50,19 @@ class CompetitionAdmin(admin.ModelAdmin):
     def complete_competition(self, request, queryset):
         updated = queryset.exclude(status=Competition.Status.DRAFT).update(status=Competition.Status.COMPLETED)
         self.message_user(request, f"Marked {updated} competition(s) as completed.", messages.SUCCESS)
+
+
+@admin.register(Vote)
+class VoteAdmin(admin.ModelAdmin):
+    list_display = ("competition", "dj", "created_at")
+    list_filter = ("competition", "dj")
+    search_fields = ("competition__week_number", "dj__name")
+    date_hierarchy = "created_at"
+    ordering = ("-created_at",)
+    readonly_fields = ("competition", "dj", "voter_hash", "created_at")
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
