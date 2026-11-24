@@ -63,7 +63,7 @@ class Vote(models.Model):
     class Meta:
         ordering = ["-created_at"]
         constraints = [
-            models.UniqueConstraint(fields=["competition", "voter_hash"], name="one_vote_per_session_per_competition")
+            models.UniqueConstraint(fields=["competition", "voter_hash"], name="uniq_vote_session_round")
         ]
         indexes = [models.Index(fields=["competition", "dj"], name="vote_comp_dj_idx")]
 
