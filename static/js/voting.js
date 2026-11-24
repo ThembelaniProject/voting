@@ -1,5 +1,5 @@
 (() => {
-  const KEY = 'dj-battle-phase1-week-01';
+  const KEY = 'pheli-fm-950-dj-survival-week-01';
   const seed = { dj1: 1250, dj2: 750 };
   const $ = id => document.getElementById(id);
   const freshState = () => ({ votes: {...seed}, votedFor: null, deadline: Date.now() + 7 * 24 * 60 * 60 * 1000 });
