@@ -8,6 +8,8 @@ class DJ(models.Model):
     bio = models.CharField(max_length=240, blank=True)
     photo_url = models.URLField(blank=True)
     is_active = models.BooleanField(default=True)
+    is_eliminated = models.BooleanField(default=False)
+    is_champion = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -33,6 +35,19 @@ class Competition(models.Model):
     status = models.CharField(max_length=12, choices=Status.choices, default=Status.DRAFT)
     starts_at = models.DateTimeField(default=timezone.now)
     ends_at = models.DateTimeField()
+    next_challenger = models.ForeignKey(
+        DJ, on_delete=models.PROTECT, related_name="scheduled_challenges",
+        blank=True, null=True, help_text="Choose the fresh DJ who will challenge the winner next week."
+    )
+    is_final = models.BooleanField(
+        default=False, help_text="Tick this only when this is the final round of the season."
+    )
+    winner = models.ForeignKey(
+        DJ, on_delete=models.PROTECT, related_name="competition_wins", blank=True, null=True
+    )
+    eliminated_dj = models.ForeignKey(
+        DJ, on_delete=models.PROTECT, related_name="competition_eliminations", blank=True, null=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -49,6 +64,10 @@ class Competition(models.Model):
             other_open = Competition.objects.filter(status=self.Status.OPEN).exclude(pk=self.pk)
             if other_open.exists():
                 raise ValidationError("Only one weekly competition can be open at a time.")
+        if self.next_challenger_id and self.next_challenger_id in (self.dj_one_id, self.dj_two_id):
+            raise ValidationError("The next challenger must be different from the current contestants.")
+        if self.is_final and self.next_challenger_id:
+            raise ValidationError("A final round cannot have a next challenger.")
 
     def __str__(self):
         return f"Week {self.week_number}: {self.dj_one} vs {self.dj_two}"
