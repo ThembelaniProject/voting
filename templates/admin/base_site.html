@@ -1,0 +1,22 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | Pheli FM 95.0 Control{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">PHELI FM 95.0 <span style="color:#ff8297">· COMPETITION CONTROL</span></a></h1>
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  #header { background:#100d1b; color:#fff; }
+  #branding h1, #branding h1 a { color:#fff; font-weight:800; }
+  .module h2, .module caption, .inline-group h2 { background:#24182a; }
+  div.breadcrumbs { background:#211629; }
+  .button, input[type=submit], input[type=button], .submit-row input, a.button { background:#e85d78; border-radius:5px; }
+  .button.default, input[type=submit].default, .submit-row input.default { background:#bd385c; }
+  a:link, a:visited { color:#c43d65; }
+  #content h1 { font-weight:800; }
+</style>
+{% endblock %}
