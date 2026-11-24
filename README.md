@@ -1,10 +1,24 @@
 # Pheli FM 95.0 — DJ Survival Challenge
 
-A Django-powered weekly DJ survival competition for Pheli FM 95.0. Fans choose the DJ they want to keep in the competition. The DJ with more votes survives and faces a new challenger in the next weekly round.
+A Django-powered weekly DJ survival competition for Pheli FM 95.0. Fans choose the DJ they want to keep in the competition. The DJ with more votes survives and faces a fresh challenger in the next weekly round.
 
-## Phase 3: Server-side voting
+## Phase 4: automatic elimination and weekly progression
 
-- Votes are stored in the Django SQLite database, not in browser localStorage.
+1. Create the weekly matchup and open voting from Django admin.
+2. When voting ends, use **Close voting** in the competition list.
+3. Edit the closed competition and select a fresh **Next challenger**. The selected DJ must be active and not eliminated.
+4. If this is the season's final matchup, tick **Is final** instead and leave Next challenger blank.
+5. Return to the competition list, select the closed round, and run **Finalize result, eliminate losing DJ and create next week**.
+6. The app counts the votes. The DJ with more votes survives; the other DJ is marked eliminated. A new Draft round is created automatically with the survivor against the selected challenger.
+7. Open the new Draft round when its schedule is ready. For a final round, the winner is marked as the season champion.
+
+A tied result is deliberately not finalized: no DJ is eliminated and no next round is created. Administrators must resolve the tie according to the station's published competition rules before taking further action. A round must be closed before it can be finalized. The generated next round starts as Draft with a seven-day schedule; an administrator should review its dates before opening it.
+
+The public website now displays completed round results and the season champion.
+
+## Phase 3: server-side voting
+
+- Votes are stored in the Django database, not browser localStorage.
 - All visitors see the same totals from the server.
 - A browser session receives one vote per competition.
 - A database-level unique constraint prevents the same session identity from voting twice in the same round.
@@ -16,15 +30,9 @@ A Django-powered weekly DJ survival competition for Pheli FM 95.0. Fans choose t
 
 The system uses an anonymous browser-session identity and stores only its SHA-256 hash with the vote. This is a practical first anti-duplicate measure, not verified identity or complete fraud prevention. Clearing browser cookies, using another browser/device, or automation can bypass session-based limits. For a high-stakes public competition, add verified mobile/email identity, rate limiting, monitoring and a clear voting policy before launch.
 
-## Phase 2: Competition management
+## Phase 2: competition management
 
-The password-protected Django admin area lets Pheli FM administrators:
-- Add, edit, search and deactivate DJs.
-- Store each DJ's name, short bio and photo URL.
-- Create weekly competitions and select two different DJs.
-- Set voting start and end dates/times.
-- Open voting, close voting or mark a round completed.
-- Manage one open competition at a time.
+The password-protected Django admin area lets Pheli FM administrators add, edit, search and deactivate DJs; create weekly competitions; select two different DJs; set dates; and open or close voting.
 
 ## Run locally on Windows
 
@@ -41,17 +49,7 @@ Public website: http://127.0.0.1:8000/
 
 Administrator dashboard: http://127.0.0.1:8000/admin/
 
-If you already ran Phase 2, pull the latest changes and run `py manage.py migrate` to create the new Vote table. Your existing DJs and competitions remain in the local SQLite database.
-
-## First-time competition setup
-
-1. Sign in at `/admin/`.
-2. Under **DJs**, add the two DJs for the first matchup. Add a full image URL if available.
-3. Under **Weekly competitions**, create Week 1, select the two DJs, and set the start and end dates/times. Save it as Draft.
-4. Select that competition in the list and choose **Open voting for selected competition** from the Actions menu.
-5. The public home page will show the matchup. Use **Close voting for selected competition** when voting should stop.
-
-Use South African local time (Africa/Johannesburg) when entering competition dates.
+If you already have a local database, pull the latest changes and run `py manage.py migrate`. The new migrations add the survival fields without deleting existing DJs, competitions or votes.
 
 ## Run automated tests
 
@@ -59,10 +57,10 @@ Use South African local time (Africa/Johannesburg) when entering competition dat
 py manage.py test competition
 ```
 
-Tests cover server-side vote storage, duplicate vote rejection, shared totals across separate browser sessions, invalid choices and closed competitions.
+Tests cover server-side voting, duplicate vote rejection, shared totals, closed competitions, automatic elimination, tie handling, champion selection and next-round creation.
 
 ## Database and deployment
 
-Local development uses SQLite (db.sqlite3); no separate database server is required. The database file must be persisted and backed up. For a multi-instance production deployment, use PostgreSQL or another shared production database rather than a local SQLite file.
+Local development uses SQLite (`db.sqlite3`); no separate database server is required. The database file must be persisted and backed up. For a multi-instance production deployment, use PostgreSQL or another shared production database rather than a local SQLite file.
 
-Before deploying, set a strong DJANGO_SECRET_KEY, set DJANGO_DEBUG=False, and set DJANGO_ALLOWED_HOSTS to the actual hostnames. Use HTTPS. Configure production session/cookie settings and reliable backups. Do not commit credentials or the production database file.
+Before deploying, set a strong `DJANGO_SECRET_KEY`, set `DJANGO_DEBUG=False`, set `DJANGO_ALLOWED_HOSTS` to the actual hostnames, use HTTPS, configure secure session/cookie settings and reliable backups. Do not commit credentials or the production database file.
