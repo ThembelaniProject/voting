@@ -1,12 +1,16 @@
 (() => {
-  const KEY = 'pheli-fm-950-dj-survival-week-01';
-  const seed = { dj1: 1250, dj2: 750 };
+  const battle = document.getElementById('battle');
+  const week = battle.dataset.week || '0';
+  const KEY = `pheli-fm-950-dj-survival-week-${week}`;
+  const votingOpen = battle.dataset.votingOpen === 'true';
+  const configuredDeadline = Date.parse(battle.dataset.deadline || '') || 0;
+  const seed = { dj1: 0, dj2: 0 };
   const $ = id => document.getElementById(id);
-  const freshState = () => ({ votes: {...seed}, votedFor: null, deadline: Date.now() + 7 * 24 * 60 * 60 * 1000 });
+  const freshState = () => ({ votes: {...seed}, votedFor: null, deadline: configuredDeadline });
   const readState = () => {
     try {
       const saved = JSON.parse(localStorage.getItem(KEY));
-      return saved && saved.votes && saved.deadline ? saved : freshState();
+      return saved && saved.votes && typeof saved.deadline === 'number' ? saved : freshState();
     } catch { return freshState(); }
   };
   let state = readState();
@@ -16,7 +20,7 @@
   function render() {
     const total = state.votes.dj1 + state.votes.dj2;
     const p1 = total ? state.votes.dj1 / total * 100 : 0;
-    const p2 = 100 - p1;
+    const p2 = total ? 100 - p1 : 0;
     $('dj1-votes').textContent = fmt(state.votes.dj1);
     $('dj2-votes').textContent = fmt(state.votes.dj2);
     $('dj1-percent').textContent = `${p1.toFixed(1)}%`;
@@ -27,20 +31,22 @@
     $('leader-one').textContent = fmt(state.votes.dj1);
     $('leader-two').textContent = fmt(state.votes.dj2);
     document.querySelectorAll('[data-vote]').forEach(btn => {
-      const ended = Date.now() >= state.deadline;
+      const ended = !votingOpen || !state.deadline || Date.now() >= state.deadline;
       btn.disabled = Boolean(state.votedFor) || ended;
-      if (state.votedFor) btn.textContent = state.votedFor === btn.dataset.vote ? 'YOUR VOTE IS CAST ✓' : 'VOTE ALREADY CAST';
-      else if (ended) btn.textContent = 'VOTING HAS CLOSED';
+      if (state.votedFor) btn.textContent = state.votedFor === btn.dataset.vote ? 'YOUR DEMO VOTE IS CAST ✓' : 'DEMO VOTE ALREADY CAST';
+      else if (ended) btn.textContent = 'VOTING IS NOT OPEN';
     });
     if (state.votedFor) {
-      $('vote-message').textContent = 'Thanks for supporting your DJ. This browser has used its vote for Week 01.';
+      $('vote-message').textContent = 'Thanks for supporting your DJ. This browser has used its demo vote for this round.';
       $('vote-confirm').hidden = false;
-      $('vote-confirm').textContent = `Your vote for ${state.votedFor === 'dj1' ? 'DJ THUKZIN' : 'DJ MAPHO'} has been recorded in this browser.`;
+      $('vote-confirm').textContent = `Your demo vote for ${state.votedFor === 'dj1' ? $('dj1-name').textContent : $('dj2-name').textContent} has been saved in this browser only.`;
+    } else if (!votingOpen) {
+      $('vote-message').textContent = 'Voting is not open right now. Pheli FM will announce when the next round begins.';
     }
   }
 
   document.querySelectorAll('[data-vote]').forEach(btn => btn.addEventListener('click', () => {
-    if (state.votedFor || Date.now() >= state.deadline) return;
+    if (!votingOpen || state.votedFor || !state.deadline || Date.now() >= state.deadline) return;
     state.votes[btn.dataset.vote] += 1;
     state.votedFor = btn.dataset.vote;
     save();
@@ -51,7 +57,9 @@
     localStorage.removeItem(KEY);
     state = freshState();
     $('vote-confirm').hidden = true;
-    $('vote-message').textContent = 'Pick ONE DJ. Your vote decides who gets another week.';
+    $('vote-message').textContent = votingOpen
+      ? 'Pick ONE DJ. Your vote decides who gets another week.'
+      : 'Voting is not open right now. Pheli FM will announce when the next round begins.';
     save();
     render();
   });
@@ -66,11 +74,8 @@
     $('hours').textContent = String(hours).padStart(2, '0');
     $('minutes').textContent = String(mins).padStart(2, '0');
     $('seconds').textContent = String(secs).padStart(2, '0');
-    if (!left) {
-      document.querySelectorAll('[data-vote]').forEach(b => { b.disabled = true; b.textContent = 'VOTING HAS CLOSED'; });
-      $('vote-message').textContent = state.votes.dj1 === state.votes.dj2
-        ? 'The round ended in a tie. An organiser must decide the next step.'
-        : `${state.votes.dj1 > state.votes.dj2 ? 'DJ THUKZIN' : 'DJ MAPHO'} survives and stays for another week!`;
+    if (!left || !votingOpen) {
+      document.querySelectorAll('[data-vote]').forEach(b => { b.disabled = true; b.textContent = 'VOTING IS NOT OPEN'; });
     }
   }
 
