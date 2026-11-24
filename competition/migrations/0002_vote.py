@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name="vote",
-            constraint=models.UniqueConstraint(fields=("competition", "voter_hash"), name="one_vote_per_session_per_competition"),
+            constraint=models.UniqueConstraint(fields=("competition", "voter_hash"), name="uniq_vote_session_round"),
         ),
         migrations.AddIndex(
             model_name="vote",
