@@ -3,8 +3,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#090812"><meta name="description" content="Vote for the DJ you want to stay in the weekly DJ Battle competition.">
-  <title>DJ BATTLE — The fans decide</title>
+  <meta name="theme-color" content="#090812"><meta name="description" content="Pheli FM 95.0 DJ Survival Challenge. Vote for the DJ you want to keep in the competition for another week.">
+  <title>Pheli FM 95.0 | DJ Survival Challenge</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -12,23 +12,23 @@
 <body>
   <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
   <header class="site-header wrap">
-    <a class="brand" href="#top" aria-label="DJ Battle home"><span class="brand-mark">DB</span><span>DJ<span class="brand-accent">BATTLE</span></span></a>
+    <a class="brand" href="#top" aria-label="Pheli FM 95.0 home"><span class="brand-mark">PFM</span><span>PHELI FM <span class="brand-accent">95.0</span></span></a>
     <nav><a href="#battle">This week</a><a href="#how-it-works">How it works</a><a href="#leaderboard">Leaderboard</a></nav>
     <a class="header-cta" href="#battle">Vote now <span>↗</span></a>
     <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false">☰</button>
   </header>
   <main id="top">
     <section class="hero wrap">
-      <div class="hero-copy"><div class="eyebrow"><span class="live-dot"></span> THE WEEKLY DJ SURVIVAL SHOWDOWN</div>
-        <h1>THE CROWD<br>DECIDES <em>WHO</em><br>STAYS.</h1>
-        <p>Two DJs. One spot for another week. Back the sound you believe in — your vote keeps your favourite DJ in the competition.</p>
+      <div class="hero-copy"><div class="eyebrow"><span class="live-dot"></span> PHELI FM 95.0 PRESENTS</div>
+        <h1>WHO WILL<br><em>SURVIVE</em><br>THE SHOWDOWN?</h1>
+        <p>Pheli FM 95.0 puts two DJs head-to-head every week. Vote for the DJ you want to keep on the decks for another week. The DJ with fewer votes is eliminated.</p>
         <a class="primary-btn" href="#battle">Choose who stays <span>↓</span></a>
         <div class="hero-proof"><div class="avatar-stack"><i>♪</i><i>♫</i><i>♬</i></div><span>Real fans. Real votes. One survivor.</span></div>
       </div>
       <div class="hero-art"><div class="hero-orbit orbit-a"></div><div class="hero-orbit orbit-b"></div><div class="hero-disc">♫</div><div class="hero-sticker">TURN<br>IT UP</div><div class="hero-art-caption"><span>01 / WEEKLY SHOWDOWN</span><strong>LET THE MUSIC<br>MAKE THE CALL.</strong></div></div>
     </section>
     <section class="battle-section wrap" id="battle">
-      <div class="section-heading"><div><div class="eyebrow">THE CURRENT SHOWDOWN</div><h2>WHO DESERVES <em>ANOTHER WEEK?</em></h2></div><div class="week-pill"><span class="live-dot"></span> WEEK 01 · VOTING OPEN</div></div>
+      <div class="section-heading"><div><div class="eyebrow">PHELI FM 95.0 · THIS WEEK</div><h2>WHO SHOULD <em>STAY ANOTHER WEEK?</em></h2></div><div class="week-pill"><span class="live-dot"></span> WEEK 01 · VOTING OPEN</div></div>
       <div class="battle-meta"><span>VOTING CLOSES IN</span><div class="countdown" id="countdown"><b id="days">06</b><small>DAYS</small><b id="hours">12</b><small>HRS</small><b id="minutes">34</b><small>MIN</small><b id="seconds">56</b><small>SEC</small></div><span class="demo-label">DEMO ROUND</span></div>
       <div class="contestants" id="contestants">
         <article class="dj-card dj-purple" data-dj="dj1"><div class="dj-photo photo-one"><span class="photo-number">01</span><span class="dj-tag">THE DEFENDING DJ</span></div><div class="dj-info"><div class="dj-role">CURRENT CHAMPION</div><h3 id="dj1-name">DJ THUKZIN</h3><p>Known for heavyweight amapiano sets and unstoppable energy.</p><div class="vote-stats"><strong id="dj1-votes">1,250</strong><span>FAN VOTES</span><b id="dj1-percent">62.5%</b></div><div class="progress"><span id="dj1-bar" style="width:62.5%"></span></div><button class="vote-btn" data-vote="dj1">I WANT THUKZIN TO STAY <span>↗</span></button></div></article>
@@ -38,10 +38,10 @@
       <div class="vote-footer"><span id="vote-message">Pick ONE DJ. Your vote decides who gets another week.</span><span><strong id="total-votes">2,000</strong> TOTAL VOTES</span></div><div class="demo-tools"><span>Preview controls · votes are stored only in this browser</span><button id="reset-demo" type="button">Reset demo vote ↻</button></div>
       <div class="vote-confirm" id="vote-confirm" role="status" aria-live="polite" hidden></div>
     </section>
-    <section class="how-section wrap" id="how-it-works"><div class="eyebrow">SIMPLE. LOUD. FAIR.</div><h2>HOW THE <em>SHOWDOWN</em> WORKS</h2><div class="steps"><article><span>01</span><h3>MEET THE DJs</h3><p>Two DJs go head-to-head in this week's competition.</p></article><article><span>02</span><h3>CAST YOUR VOTE</h3><p>Choose the DJ you want to keep in the competition.</p></article><article><span>03</span><h3>ONE DJ SURVIVES</h3><p>When voting closes, the DJ with more votes stays for another week.</p></article><article><span>04</span><h3>MEET THE NEXT CHALLENGER</h3><p>The survivor faces a new DJ in the next weekly round.</p></article></div></section>
-    <section class="leader-section wrap" id="leaderboard"><div><div class="eyebrow">THE ROAD TO THE TOP</div><h2>THE <em>LEADERBOARD</em></h2><p>Every week is another chance to prove who owns the decks.</p></div><div class="leader-card"><div class="leader-row"><span class="rank">01</span><span class="leader-name">DJ THUKZIN <small>WEEK 01 · CURRENT LEADER</small></span><strong id="leader-one">1,250</strong></div><div class="leader-row"><span class="rank">02</span><span class="leader-name">DJ MAPHO <small>WEEK 01 · CHALLENGER</small></span><strong id="leader-two">750</strong></div></div></section>
+    <section class="how-section wrap" id="how-it-works"><div class="eyebrow">HOW THE PHELI FM CHALLENGE WORKS</div><h2>HOW THE <em>SHOWDOWN</em> WORKS</h2><div class="steps"><article><span>01</span><h3>MEET THE DJs</h3><p>Two DJs go head-to-head in this week's competition.</p></article><article><span>02</span><h3>CAST YOUR VOTE</h3><p>Choose the DJ you want to keep in the competition.</p></article><article><span>03</span><h3>ONE DJ SURVIVES</h3><p>When voting closes, the DJ with more votes stays for another week.</p></article><article><span>04</span><h3>MEET THE NEXT CHALLENGER</h3><p>The survivor faces a new DJ in the next weekly round.</p></article></div></section>
+    <section class="leader-section wrap" id="leaderboard"><div><div class="eyebrow">THE ROAD TO THE TOP</div><h2>PHELI FM <em>LEADERBOARD</em></h2><p>Every week is another chance to prove who owns the decks.</p></div><div class="leader-card"><div class="leader-row"><span class="rank">01</span><span class="leader-name">DJ THUKZIN <small>WEEK 01 · CURRENT LEADER</small></span><strong id="leader-one">1,250</strong></div><div class="leader-row"><span class="rank">02</span><span class="leader-name">DJ MAPHO <small>WEEK 01 · CHALLENGER</small></span><strong id="leader-two">750</strong></div></div></section>
     <section class="final-cta wrap"><div class="eyebrow">YOUR VOTE HAS A SOUND</div><h2>DON'T JUST WATCH.<br><em>MAKE THE CALL.</em></h2><a class="primary-btn" href="#battle">Vote for who stays <span>↑</span></a></section>
   </main>
-  <footer class="site-footer wrap"><a class="brand" href="#top"><span class="brand-mark">DB</span><span>DJ<span class="brand-accent">BATTLE</span></span></a><span>THE FANS DECIDE WHO STAYS.</span><span>PHASE 1 · DEMO EXPERIENCE</span></footer>
+  <footer class="site-footer wrap"><a class="brand" href="#top"><span class="brand-mark">DB</span><span>DJ<span class="brand-accent">BATTLE</span></span></a><span>PHELI FM 95.0 · THE FANS DECIDE WHO STAYS.</span><span>PHELI FM 95.0 · DJ SURVIVAL CHALLENGE</span></footer>
   <script src="{% static 'js/voting.js' %}"></script>
 </body></html>
