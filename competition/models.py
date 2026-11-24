@@ -52,3 +52,20 @@ class Competition(models.Model):
 
     def __str__(self):
         return f"Week {self.week_number}: {self.dj_one} vs {self.dj_two}"
+
+
+class Vote(models.Model):
+    competition = models.ForeignKey(Competition, on_delete=models.CASCADE, related_name="votes")
+    dj = models.ForeignKey(DJ, on_delete=models.PROTECT, related_name="votes")
+    voter_hash = models.CharField(max_length=64)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(fields=["competition", "voter_hash"], name="one_vote_per_session_per_competition")
+        ]
+        indexes = [models.Index(fields=["competition", "dj"], name="vote_comp_dj_idx")]
+
+    def __str__(self):
+        return f"{self.dj} · Week {self.competition.week_number}"
