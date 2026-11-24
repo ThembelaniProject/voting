@@ -5,7 +5,7 @@
   const deadline = Date.parse(battle.dataset.deadline || '') || 0;
   const $ = id => document.getElementById(id);
   const fmt = value => Number(value || 0).toLocaleString('en-ZA');
-  let alreadyVoted = false;
+  let alreadyVoted = battle.dataset.alreadyVoted === 'true';
   let votingOpen = votingOpenOnPage;
   let submitting = false;
 
