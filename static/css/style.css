@@ -5,3 +5,5 @@
 
 /* Pheli FM 95.0 station identity */
 .brand{letter-spacing:-.45px}.brand-mark{font-size:9px;letter-spacing:-.5px;background:linear-gradient(135deg,#ff4d6d,#ffb347);color:#190b13}.brand-accent{color:#ff7890}.eyebrow{color:#ff8297}.primary-btn{background:linear-gradient(110deg,#ff718b,#ffb347);color:#1b0b12}.hero h1 em,.how-section h2 em,.leader-section h2 em,.final-cta h2 em{color:#ff8297}.week-pill .live-dot{background:#ff718b;box-shadow:0 0 12px #ff718b}.vote-btn{background:linear-gradient(110deg,#ff718b,#ffb347)}.dj-blue .vote-btn{background:#65c7ff}.vote-stats b,.rank{color:#ff8297}.progress span{background:#ff718b}.dj-role{color:#ff8297}
+
+.station-logo{width:44px;height:44px;object-fit:contain;border-radius:8px;background:#fff;display:block}.brand-wordmark{font:700 18px var(--display);letter-spacing:-.6px}.brand-wordmark .brand-accent{color:#ff8297}@media(max-width:650px){.station-logo{width:39px;height:39px}.brand-wordmark{font-size:16px}}
