@@ -39,6 +39,12 @@ def _is_open(competition, now=None):
 
 @ensure_csrf_cookie
 def home(request):
+    # Create a stable anonymous browser-session identity before voting starts.
+    # Only its SHA-256 hash is stored alongside a vote.
+    if not request.session.get("vote_identity"):
+        request.session["vote_identity"] = secrets.token_urlsafe(32)
+        request.session.set_expiry(60 * 60 * 24 * 30)
+
     now = timezone.now()
     competition = Competition.objects.filter(status=Competition.Status.OPEN).first()
     if competition is None:
