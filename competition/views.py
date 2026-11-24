@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_GET, require_POST
 
-from .models import Competition, Vote
+from .models import Competition, DJ, Vote
 
 
 def _vote_totals(competition):
@@ -39,16 +39,18 @@ def _is_open(competition, now=None):
 
 @ensure_csrf_cookie
 def home(request):
-    # Create a stable anonymous browser-session identity before voting starts.
-    # Only its SHA-256 hash is stored alongside a vote.
     if not request.session.get("vote_identity"):
         request.session["vote_identity"] = secrets.token_urlsafe(32)
         request.session.set_expiry(60 * 60 * 24 * 30)
 
     now = timezone.now()
-    competition = Competition.objects.filter(status=Competition.Status.OPEN).first()
+    competition = Competition.objects.filter(status=Competition.Status.OPEN).select_related(
+        "dj_one", "dj_two"
+    ).first()
     if competition is None:
-        competition = Competition.objects.exclude(status=Competition.Status.DRAFT).first()
+        competition = Competition.objects.exclude(status=Competition.Status.DRAFT).select_related(
+            "dj_one", "dj_two", "winner", "eliminated_dj"
+        ).first()
 
     voting_open = bool(competition and _is_open(competition, now))
     if competition is None:
@@ -70,6 +72,11 @@ def home(request):
             voter_hash = hashlib.sha256(identity.encode("utf-8")).hexdigest()
             already_voted = Vote.objects.filter(competition=competition, voter_hash=voter_hash).exists()
 
+    history = Competition.objects.filter(status=Competition.Status.COMPLETED).select_related(
+        "winner", "eliminated_dj"
+    ).order_by("-week_number")[:8]
+    champion = DJ.objects.filter(is_champion=True).first()
+
     return render(request, "index.html", {
         "competition": competition,
         "competition_status": competition_status,
@@ -78,6 +85,8 @@ def home(request):
         "week_number": competition.week_number if competition else None,
         "vote_totals": totals,
         "already_voted": already_voted,
+        "round_history": history,
+        "champion": champion,
     })
 
 
