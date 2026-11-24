@@ -56,7 +56,7 @@ class CompetitionAdmin(admin.ModelAdmin):
 class VoteAdmin(admin.ModelAdmin):
     list_display = ("competition", "dj", "created_at")
     list_filter = ("competition", "dj")
-    search_fields = ("competition__week_number", "dj__name")
+    search_fields = ("dj__name",)
     date_hierarchy = "created_at"
     ordering = ("-created_at",)
     readonly_fields = ("competition", "dj", "voter_hash", "created_at")
