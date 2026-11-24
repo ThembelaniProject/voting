@@ -7,3 +7,20 @@
 .brand{letter-spacing:-.45px}.brand-mark{font-size:9px;letter-spacing:-.5px;background:linear-gradient(135deg,#ff4d6d,#ffb347);color:#190b13}.brand-accent{color:#ff7890}.eyebrow{color:#ff8297}.primary-btn{background:linear-gradient(110deg,#ff718b,#ffb347);color:#1b0b12}.hero h1 em,.how-section h2 em,.leader-section h2 em,.final-cta h2 em{color:#ff8297}.week-pill .live-dot{background:#ff718b;box-shadow:0 0 12px #ff718b}.vote-btn{background:linear-gradient(110deg,#ff718b,#ffb347)}.dj-blue .vote-btn{background:#65c7ff}.vote-stats b,.rank{color:#ff8297}.progress span{background:#ff718b}.dj-role{color:#ff8297}
 
 .station-logo{width:44px;height:44px;object-fit:contain;border-radius:8px;background:#fff;display:block}.brand-wordmark{font:700 18px var(--display);letter-spacing:-.6px}.brand-wordmark .brand-accent{color:#ff8297}@media(max-width:650px){.station-logo{width:39px;height:39px}.brand-wordmark{font-size:16px}}
+
+/* Phase 4: survival history and champion */
+.results-section{padding:72px 0;border-top:1px solid var(--line)}
+.results-section h2{font:700 clamp(30px,4vw,46px)/1.1 var(--display);letter-spacing:-2px;margin:13px 0 28px}
+.results-section h2 em{font-style:normal;color:#ff8297}
+.champion-banner{padding:24px;background:linear-gradient(110deg,#ff718b20,#ffb34715);border:1px solid #ff829755;border-radius:10px;margin-bottom:22px}
+.champion-banner span{display:block;font-size:9px;letter-spacing:2px;color:#ffb347;font-weight:800}
+.champion-banner strong{display:block;font:700 28px var(--display);margin-top:9px}
+.champion-banner p,.empty-results{font-size:11px;color:var(--muted);margin-bottom:0}
+.results-list{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:5px 20px}
+.result-row{display:flex;align-items:center;gap:18px;padding:17px 0}
+.result-row+.result-row{border-top:1px solid var(--line)}
+.result-week{font-size:9px;letter-spacing:1px;color:#ff8297;font-weight:800;min-width:65px}
+.result-match{flex:1;font-size:12px;color:var(--muted)}
+.result-match strong{color:white}
+.result-status{font-size:8px;letter-spacing:1px;color:#9cf3c8;border:1px solid #5ee6a855;padding:7px 9px;border-radius:20px}
+@media(max-width:650px){.results-section{padding:55px 0}.result-row{gap:9px}.result-week{min-width:55px;font-size:8px}.result-match{font-size:10px}.champion-banner strong{font-size:23px}}
