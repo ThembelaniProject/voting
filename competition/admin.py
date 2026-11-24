@@ -1,13 +1,15 @@
 from django.contrib import admin, messages
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 from .models import Competition, DJ, Vote
+from .services import finalize_competition
 
 
 @admin.register(DJ)
 class DJAdmin(admin.ModelAdmin):
-    list_display = ("name", "is_active", "created_at")
-    list_filter = ("is_active",)
+    list_display = ("name", "is_active", "is_eliminated", "is_champion", "created_at")
+    list_filter = ("is_active", "is_eliminated", "is_champion")
     search_fields = ("name", "bio")
     list_editable = ("is_active",)
     ordering = ("name",)
@@ -15,15 +17,26 @@ class DJAdmin(admin.ModelAdmin):
 
 @admin.register(Competition)
 class CompetitionAdmin(admin.ModelAdmin):
-    list_display = ("week_number", "dj_one", "dj_two", "status", "vote_count", "starts_at", "ends_at")
-    list_filter = ("status",)
-    search_fields = ("title", "dj_one__name", "dj_two__name")
+    list_display = (
+        "week_number", "dj_one", "dj_two", "status", "vote_count",
+        "winner", "eliminated_dj", "starts_at", "ends_at",
+    )
+    list_filter = ("status", "is_final")
+    search_fields = ("title", "dj_one__name", "dj_two__name", "winner__name")
     ordering = ("-week_number",)
-    actions = ("open_voting", "close_voting", "complete_competition")
+    readonly_fields = ("winner", "eliminated_dj")
+    actions = ("open_voting", "close_voting", "finalize_and_progress")
 
     @admin.display(description="Recorded votes")
     def vote_count(self, obj):
         return obj.votes.count()
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "next_challenger":
+            kwargs["queryset"] = DJ.objects.filter(
+                is_active=True, is_eliminated=False, is_champion=False
+            ).order_by("name")
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     @admin.action(description="Open voting for selected competition")
     def open_voting(self, request, queryset):
@@ -33,6 +46,9 @@ class CompetitionAdmin(admin.ModelAdmin):
         competition = queryset.first()
         if competition.ends_at <= timezone.now():
             self.message_user(request, "Set a future voting end date before opening this competition.", messages.ERROR)
+            return
+        if competition.dj_one.is_eliminated or competition.dj_two.is_eliminated:
+            self.message_user(request, "An eliminated DJ cannot enter a new competition.", messages.ERROR)
             return
         Competition.objects.exclude(pk=competition.pk).filter(status=Competition.Status.OPEN).update(
             status=Competition.Status.CLOSED
@@ -46,10 +62,30 @@ class CompetitionAdmin(admin.ModelAdmin):
         updated = queryset.filter(status=Competition.Status.OPEN).update(status=Competition.Status.CLOSED)
         self.message_user(request, f"Closed voting for {updated} competition(s).", messages.SUCCESS)
 
-    @admin.action(description="Mark selected competition as completed")
-    def complete_competition(self, request, queryset):
-        updated = queryset.exclude(status=Competition.Status.DRAFT).update(status=Competition.Status.COMPLETED)
-        self.message_user(request, f"Marked {updated} competition(s) as completed.", messages.SUCCESS)
+    @admin.action(description="Finalize result, eliminate losing DJ and create next week")
+    def finalize_and_progress(self, request, queryset):
+        if queryset.count() != 1:
+            self.message_user(request, "Select exactly one closed competition to finalize.", messages.ERROR)
+            return
+        try:
+            result = finalize_competition(queryset.first().pk)
+        except (ValidationError, Competition.DoesNotExist) as exc:
+            self.message_user(request, str(exc), messages.ERROR)
+            return
+
+        if result["next_round"]:
+            message = (
+                f"Week {result['competition'].week_number} finalized. "
+                f"{result['winner'].name} survives; {result['eliminated'].name} is eliminated. "
+                f"Week {result['next_round'].week_number} was created as Draft with "
+                f"{result['next_round'].dj_two.name} as the new challenger. Open it when ready."
+            )
+        else:
+            message = (
+                f"Season champion crowned: {result['winner'].name}. "
+                f"{result['eliminated'].name} has been eliminated."
+            )
+        self.message_user(request, message, messages.SUCCESS)
 
 
 @admin.register(Vote)
