@@ -119,3 +119,26 @@ input:focus, textarea:focus, select:focus {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition:none !important; scroll-behavior:auto !important; }
 }
+
+/* Device image picker */
+input[type="file"] {
+  display:block;
+  width:min(100%, 520px);
+  padding:12px !important;
+  border:1px dashed #d8a4b4 !important;
+  border-radius:12px !important;
+  background:#fff7fa !important;
+  color:var(--ph-ink);
+  cursor:pointer;
+}
+input[type="file"]::file-selector-button {
+  margin-right:14px;
+  padding:10px 15px;
+  border:0;
+  border-radius:8px;
+  background:var(--ph-pink);
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
+input[type="file"]::file-selector-button:hover { background:var(--ph-pink-dark); }
