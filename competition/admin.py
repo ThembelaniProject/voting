@@ -1,6 +1,7 @@
 from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.utils.html import format_html
 
 from .models import Competition, DJ, Vote
 from .services import finalize_competition
@@ -19,9 +20,27 @@ class DJAdmin(admin.ModelAdmin):
     list_editable = ("is_active",)
     ordering = ("name",)
     list_per_page = 20
-    readonly_fields = ("created_at",)
+    readonly_fields = ("created_at", "photo_preview")
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+        field = super().formfield_for_dbfield(db_field, request, **kwargs)
+        if db_field.name == "photo_url" and field:
+            field.label = "DJ photo URL"
+            field.help_text = "Paste a direct, publicly accessible image URL (for example, an image ending in .jpg, .png or .webp)."
+            field.widget.attrs["placeholder"] = "https://example.com/dj-photo.jpg"
+        return field
+
+    @admin.display(description="Photo preview")
+    def photo_preview(self, obj):
+        if obj and obj.photo_url:
+            return format_html(
+                '<img src="{}" alt="{}" style="max-width:220px;max-height:220px;object-fit:cover;border-radius:12px;border:1px solid #ddd;" />',
+                obj.photo_url,
+                obj.name,
+            )
+        return "Add a DJ photo URL above to see a preview."
+
     fieldsets = (
-        ("DJ profile", {"fields": ("name", "bio", "photo_url")}),
+        ("DJ profile", {"fields": ("name", "bio", "photo_url", "photo_preview")}),
         ("Competition status", {"fields": ("is_active", "is_eliminated", "is_champion")}),
         ("Record", {"fields": ("created_at",)}),
     )
