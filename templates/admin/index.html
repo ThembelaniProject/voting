@@ -1,0 +1,27 @@
+{% extends "admin/base_site.html" %}
+{% load static pheli_dashboard %}
+{% block bodyclass %}{{ block.super }} pheli-dashboard{% endblock %}
+{% block content %}{% pheli_dashboard as d %}
+<div class="ph-dashboard">
+<header class="ph-welcome"><div><small>PHELI FM 95.0 · STATION CONTROL</small><h1>Welcome back, {{ user.get_short_name|default:user.username }}.</h1><p>Your DJ survival competition overview.</p></div><b>● YOUR VOICE, OUR STATION</b></header>
+<div class="ph-stats">
+<a class="ph-stat pink" href="{% url 'admin:competition_dj_changelist' %}"><small>TOTAL DJs</small><strong>{{ d.total_djs }}</strong><span>{{ d.active_djs }} active competitors</span></a>
+<a class="ph-stat purple" href="{% url 'admin:competition_competition_changelist' %}"><small>COMPETITIONS</small><strong>{{ d.total_competitions }}</strong><span>{{ d.completed_competitions }} completed rounds</span></a>
+<a class="ph-stat green" href="{% url 'admin:competition_vote_changelist' %}"><small>TOTAL VOTES</small><strong>{{ d.total_votes }}</strong><span>Recorded votes</span></a>
+<a class="ph-stat amber" href="{% url 'admin:competition_competition_changelist' %}"><small>COMPLETED ROUNDS</small><strong>{{ d.completed_competitions }}</strong><span>Finalized results</span></a>
+</div>
+<div class="ph-columns">
+<section class="ph-card"><div class="ph-heading"><div><small>LIVE MATCHUP</small><h2>Current competition</h2></div>{% if d.current %}<label class="ph-live">● LIVE · WEEK {{ d.current.week_number }}</label>{% else %}<label class="ph-idle">NO LIVE ROUND</label>{% endif %}</div>
+{% if d.current %}<div class="ph-versus">
+<div class="ph-person">{% if d.current.dj_one.photo %}<img src="{{ d.current.dj_one.photo.url }}" alt="">{% elif d.current.dj_one.photo_url %}<img src="{{ d.current.dj_one.photo_url }}" alt="">{% else %}<i>{{ d.current.dj_one.name|first }}</i>{% endif %}<b>{{ d.current.dj_one.name }}</b><span>{{ d.current.dj_one_vote_count }} votes</span></div><strong>VS</strong>
+<div class="ph-person">{% if d.current.dj_two.photo %}<img src="{{ d.current.dj_two.photo.url }}" alt="">{% elif d.current.dj_two.photo_url %}<img src="{{ d.current.dj_two.photo_url }}" alt="">{% else %}<i>{{ d.current.dj_two.name|first }}</i>{% endif %}<b>{{ d.current.dj_two.name }}</b><span>{{ d.current.dj_two_vote_count }} votes</span></div></div>
+<div class="ph-timer">TIME REMAINING <strong data-ends-at="{{ d.current.ends_at|date:'c' }}">--:--:--</strong></div><p class="ph-total">{{ d.current.total_votes }} votes cast this week</p><a class="ph-primary" href="{% url 'admin:competition_competition_change' d.current.pk %}">Manage competition →</a>
+{% else %}<p class="ph-empty">No competition is live right now.</p><a class="ph-primary" href="{% url 'admin:competition_competition_add' %}">Create competition</a>{% endif %}</section>
+<section class="ph-card"><small>SEASON LEADER</small><h2>Champion</h2>{% if d.champion %}<div class="ph-champion">{% if d.champion.photo %}<img src="{{ d.champion.photo.url }}" alt="">{% elif d.champion.photo_url %}<img src="{{ d.champion.photo_url }}" alt="">{% else %}<i>♛</i>{% endif %}<h3>{{ d.champion.name }}</h3><span>Current season champion</span></div>{% else %}<p class="ph-empty">Champion not crowned yet.</p>{% endif %}<nav class="ph-shortcuts"><a href="{% url 'admin:competition_dj_add' %}">＋ Add a DJ</a><a href="{% url 'admin:competition_competition_add' %}">＋ Create weekly competition</a><a href="{% url 'admin:competition_competition_changelist' %}">↗ Manage competitions</a></nav></section>
+</div>
+<div class="ph-columns ph-lower"><section class="ph-card"><div class="ph-heading"><div><small>SEASON ARCHIVE</small><h2>Winners & eliminated DJs</h2></div><a href="{% url 'admin:competition_competition_changelist' %}">View all →</a></div>
+{% for r in d.history %}<div class="ph-history"><b>W{{ r.week_number }}</b><span>{{ r.dj_one.name }} vs {{ r.dj_two.name }}</span><span class="ph-won">✓ {{ r.winner.name|default:"Pending" }}</span><span class="ph-out">− {{ r.eliminated_dj.name|default:"Pending" }}</span><a href="{% url 'admin:competition_competition_change' r.pk %}">↗</a></div>{% empty %}<p class="ph-empty">Completed results will appear here.</p>{% endfor %}</section>
+<section class="ph-card"><small>FAN FAVOURITES</small><h2>Top DJs by votes</h2>{% for dj in d.top_djs %}<div class="ph-top">{% if dj.photo %}<img src="{{ dj.photo.url }}" alt="">{% elif dj.photo_url %}<img src="{{ dj.photo_url }}" alt="">{% else %}<i>{{ dj.name|first }}</i>{% endif %}<b>{{ dj.name }}</b><span>{{ dj.total_votes }} votes</span></div>{% empty %}<p class="ph-empty">No votes recorded yet.</p>{% endfor %}</section></div>
+{% if app_list %}<section class="ph-apps"><small>ADMINISTRATION</small><h2>Manage your station</h2>{% for app in app_list %}<h3>{{ app.name }}</h3><div class="ph-app-links">{% for m in app.models %}{% if m.admin_url %}<a href="{{ m.admin_url }}">{{ m.name }} →</a>{% endif %}{% endfor %}</div>{% endfor %}</section>{% endif %}
+</div><script>(function(){function tick(){document.querySelectorAll("[data-ends-at]").forEach(function(n){var x=Math.max(0,Math.floor((new Date(n.dataset.endsAt)-Date.now())/1000)),d=Math.floor(x/86400),h=Math.floor(x%86400/3600),m=Math.floor(x%3600/60),s=x%60;n.textContent=(d?d+"d ":"")+[h,m,s].map(v=>String(v).padStart(2,"0")).join(":");if(!x)n.textContent="Voting ended · finalize result";});}tick();setInterval(tick,1000);})();</script>
+{% endblock %}
