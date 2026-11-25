@@ -482,3 +482,63 @@ body #content .actions button::after {
   body #changelist .actions button,
   body #changelist .actions input[type=submit]{min-height:42px!important}
 }
+
+
+/* Desktop alignment: keep admin action buttons in their own clean toolbar row */
+@media(min-width:701px){
+  body #content{position:relative}
+  body #content .object-tools{
+    float:none!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-end!important;
+    flex-wrap:wrap!important;
+    gap:10px!important;
+    width:100%!important;
+    margin:0 0 18px!important;
+    padding:0!important;
+    clear:both!important;
+  }
+  body #content .object-tools li{
+    display:block!important;
+    float:none!important;
+    margin:0!important;
+    padding:0!important;
+  }
+  body #content .object-tools a{
+    margin:0!important;
+    min-width:112px;
+    min-height:40px!important;
+  }
+  body #content #content-main{clear:both}
+  body #content .submit-row{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-end!important;
+    flex-wrap:wrap!important;
+    gap:10px!important;
+    clear:both!important;
+    min-height:64px;
+  }
+  body #content .submit-row input{float:none!important;margin:0!important}
+  body #content .submit-row .deletelink-box{
+    float:none!important;
+    margin:0 auto 0 0!important;
+  }
+  body #changelist .actions{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    flex-direction:row!important;
+    flex-wrap:nowrap!important;
+    gap:12px!important;
+    min-height:62px!important;
+    padding:11px 14px!important;
+  }
+  body #changelist .actions label{flex:0 0 auto!important}
+  body #changelist .actions select{flex:0 1 300px!important}
+  body #changelist .actions button,
+  body #changelist .actions input[type=submit]{flex:0 0 auto!important}
+  body #content .ph-dj-page-heading,
+  body #content .ph-competition-list-hero{margin-bottom:18px}
+}
