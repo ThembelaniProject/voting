@@ -11,6 +11,18 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_GET, require_POST
 
 from .models import Competition, DJ, Vote
+from .services import finalize_expired_competition
+
+
+def _complete_expired_rounds():
+    expired_ids = list(
+        Competition.objects.filter(
+            status=Competition.Status.OPEN,
+            ends_at__lte=timezone.now(),
+        ).values_list("pk", flat=True)
+    )
+    for competition_id in expired_ids:
+        finalize_expired_competition(competition_id)
 
 
 def _vote_totals(competition):
@@ -39,6 +51,7 @@ def _is_open(competition, now=None):
 
 @ensure_csrf_cookie
 def home(request):
+    _complete_expired_rounds()
     if not request.session.get("vote_identity"):
         request.session["vote_identity"] = secrets.token_urlsafe(32)
         request.session.set_expiry(60 * 60 * 24 * 30)
@@ -97,6 +110,10 @@ def competition_stats(request, competition_id):
     except Competition.DoesNotExist:
         return JsonResponse({"error": "Competition not found."}, status=404)
 
+    if competition.status == Competition.Status.OPEN and competition.ends_at <= timezone.now():
+        finalize_expired_competition(competition.pk)
+        competition.refresh_from_db()
+
     totals = _vote_totals(competition)
     identity = request.session.get("vote_identity")
     already_voted = False
@@ -109,6 +126,8 @@ def competition_stats(request, competition_id):
         "voting_open": _is_open(competition),
         "already_voted": already_voted,
         "status": competition.status,
+        "winner": competition.winner.name if competition.winner_id else None,
+        "eliminated": competition.eliminated_dj.name if competition.eliminated_dj_id else None,
     })
 
 
