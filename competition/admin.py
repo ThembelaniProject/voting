@@ -1,4 +1,5 @@
 from django.contrib import admin, messages
+from django.db.models import Count
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.utils.html import format_html
@@ -26,6 +27,19 @@ class DJAdmin(admin.ModelAdmin):
         ("Competition status", {"fields": ("is_active", "is_eliminated", "is_champion")}),
         ("Record", {"fields": ("created_at",)}),
     )
+
+    change_list_template = "admin/competition/dj/change_list.html"
+    change_form_template = "admin/competition/dj/change_form.html"
+
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context["dj_dashboard"] = {
+            "total": DJ.objects.count(),
+            "active": DJ.objects.filter(is_active=True, is_eliminated=False).count(),
+            "eliminated": DJ.objects.filter(is_eliminated=True).count(),
+            "champions": DJ.objects.filter(is_champion=True).count(),
+        }
+        return super().changelist_view(request, extra_context=extra_context)
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         field = super().formfield_for_dbfield(db_field, request, **kwargs)
