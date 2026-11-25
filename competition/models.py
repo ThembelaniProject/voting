@@ -6,7 +6,8 @@ from django.utils import timezone
 class DJ(models.Model):
     name = models.CharField(max_length=100, unique=True)
     bio = models.CharField(max_length=240, blank=True)
-    photo_url = models.URLField(blank=True)
+    photo_url = models.URLField(blank=True, help_text="Legacy image URL; uploaded photos take priority.")
+    photo = models.ImageField(upload_to="dj_photos/", blank=True)
     is_active = models.BooleanField(default=True)
     is_eliminated = models.BooleanField(default=False)
     is_champion = models.BooleanField(default=False)
