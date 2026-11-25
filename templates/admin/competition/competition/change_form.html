@@ -1,0 +1,23 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+{% block content_title %}
+<section class="ph-competition-editor-hero">
+  <div class="ph-competition-editor-copy">
+    <span class="ph-competition-kicker">PHELI FM 95.0 · WEEKLY SURVIVAL CHALLENGE</span>
+    <h1>{% if original %}Competition control{% else %}Create a weekly competition{% endif %}</h1>
+    <p>{% if original %}Update the matchup, voting window and next-week progression for this round.{% else %}Set up the two DJs, voting schedule and next challenger before publishing the round.{% endif %}</p>
+  </div>
+  <div class="ph-competition-editor-mark" aria-hidden="true"><span>♫</span><small>ROUND<br>MANAGEMENT</small></div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="ph-competition-editor">
+  <div class="ph-competition-editor-tip">
+    <span class="ph-tip-icon">i</span>
+    <div><strong>Before you save</strong><p>Choose two different DJs and set an end date later than the start date. Only one competition can be open for voting at a time. Select a next challenger for a non-final round.</p></div>
+  </div>
+  {{ block.super }}
+</div>
+{% endblock %}
