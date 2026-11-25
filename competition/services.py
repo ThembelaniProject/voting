@@ -5,7 +5,7 @@ from django.db import transaction
 from django.db.models import Count
 from django.utils import timezone
 
-from .models import Competition, DJ
+from .models import Competition
 
 
 @transaction.atomic
@@ -33,16 +33,14 @@ def finalize_competition(competition_id):
 
     winner = competition.dj_one if one_votes > two_votes else competition.dj_two
     eliminated = competition.dj_two if winner.pk == competition.dj_one_id else competition.dj_one
+    challenger = competition.next_challenger
 
     if competition.is_final:
-        if competition.next_challenger_id:
+        if challenger is not None:
             raise ValidationError("A final round cannot have a next challenger.")
         winner.is_champion = True
         winner.save(update_fields=["is_champion"])
-    else:
-        challenger = competition.next_challenger
-        if challenger is None:
-            raise ValidationError("Select a next challenger in this competition before finalizing.")
+    elif challenger is not None:
         if challenger.pk in (competition.dj_one_id, competition.dj_two_id):
             raise ValidationError("The next challenger must be a different DJ.")
         if not challenger.is_active or challenger.is_eliminated or challenger.is_champion:
@@ -58,13 +56,16 @@ def finalize_competition(competition_id):
     competition.save(update_fields=["winner", "eliminated_dj", "status"])
 
     next_round = None
-    if not competition.is_final:
+    if not competition.is_final and challenger is not None:
         start = timezone.now()
+        latest_week = Competition.objects.order_by("-week_number").values_list(
+            "week_number", flat=True
+        ).first() or competition.week_number
         next_round = Competition.objects.create(
-            week_number=Competition.objects.order_by("-week_number").values_list("week_number", flat=True).first() + 1,
+            week_number=latest_week + 1,
             title=competition.title,
             dj_one=winner,
-            dj_two=competition.next_challenger,
+            dj_two=challenger,
             status=Competition.Status.DRAFT,
             starts_at=start,
             ends_at=start + timedelta(days=7),
@@ -77,3 +78,20 @@ def finalize_competition(competition_id):
         "next_round": next_round,
         "votes": {competition.dj_one_id: one_votes, competition.dj_two_id: two_votes},
     }
+
+
+@transaction.atomic
+def finalize_expired_competition(competition_id):
+    """Close an expired open round and automatically resolve an unambiguous result."""
+    competition = Competition.objects.select_for_update().get(pk=competition_id)
+    if competition.status != Competition.Status.OPEN or competition.ends_at > timezone.now():
+        return None
+
+    competition.status = Competition.Status.CLOSED
+    competition.save(update_fields=["status"])
+
+    try:
+        return finalize_competition(competition.pk)
+    except ValidationError:
+        # A tie (or another unresolved setup issue) remains closed for an admin decision.
+        return None
