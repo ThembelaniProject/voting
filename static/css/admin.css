@@ -193,3 +193,47 @@ body.app-competition.model-dj.change-form .field-photo_preview img{display:block
 body.app-competition.model-dj.change-form .submit-row{position:sticky;bottom:8px;z-index:5;box-shadow:0 8px 28px #25153618}
 @media(max-width:900px){.ph-dj-overview{grid-template-columns:repeat(2,minmax(0,1fr))}body.app-competition.model-dj.change-list #changelist{grid-template-columns:1fr}body.app-competition.model-dj.change-list #changelist-filter{grid-column:1;grid-row:auto}}
 @media(max-width:600px){.ph-dj-page-heading{align-items:flex-start;flex-direction:column;padding:20px}.ph-dj-page-heading h1{font-size:24px!important}.ph-dj-overview{gap:8px}.ph-dj-metric{padding:12px;gap:9px}.ph-dj-metric-icon{flex-basis:34px;width:34px;height:34px}.ph-dj-metric strong{font-size:20px}.ph-dj-toolbar{align-items:flex-start;flex-direction:column}.ph-dj-toolbar-hint{display:none}body.app-competition.model-dj.change-form .aligned label{float:none;width:auto;display:block;padding:0 0 7px}body.app-competition.model-dj.change-form .aligned .form-row div.flex-container,body.app-competition.model-dj.change-form .aligned .form-row .related-widget-wrapper{margin-left:0}.ph-dj-heading-note{font-size:8px}}
+
+
+/* Weekly competition create/edit studio */
+body.app-competition.model-competition.change-form #content{max-width:1500px;padding-top:25px}
+.ph-competition-editor-hero{display:flex;justify-content:space-between;align-items:center;gap:22px;position:relative;overflow:hidden;padding:28px 32px;margin:0 0 19px;border:1px solid #49305e;border-radius:18px;background:radial-gradient(circle at 84% 0,#70418e 0,transparent 32%),linear-gradient(112deg,#171326 0%,#30203f 70%,#482442 100%);box-shadow:0 16px 38px #21152d20;color:#fff}
+.ph-competition-kicker{color:#f0a8c7;font-size:9px;font-weight:900;letter-spacing:.17em}
+.ph-competition-editor-hero h1{margin:8px 0 6px!important;color:#fff!important;font-size:clamp(24px,3vw,32px)!important;font-weight:900!important;letter-spacing:-.04em}
+.ph-competition-editor-hero p{max-width:680px;margin:0;color:#d8cadd;font-size:12px;line-height:1.7}
+.ph-competition-editor-mark{display:flex;align-items:center;gap:11px;padding:12px 15px;border:1px solid #ffffff25;border-radius:13px;background:#ffffff0d;color:#f5c6df}
+.ph-competition-editor-mark span{display:grid;place-items:center;width:42px;height:42px;border-radius:11px;background:#ffffff12;color:#ff9fc5;font-size:25px}
+.ph-competition-editor-mark small{font-size:9px;font-weight:900;line-height:1.6;letter-spacing:.12em}
+.ph-competition-editor-tip{display:flex;align-items:flex-start;gap:12px;padding:15px 18px;margin:0 0 18px;border:1px solid #eadff4;border-radius:13px;background:linear-gradient(110deg,#fff,#faf6ff);box-shadow:0 7px 20px #25153608}
+.ph-tip-icon{display:grid;place-items:center;flex:0 0 27px;width:27px;height:27px;border-radius:50%;background:#eee5f8;color:#70439a;font-size:14px;font-weight:900}
+.ph-competition-editor-tip strong{display:block;margin:1px 0 4px;color:#342440;font-size:11px;font-weight:900}
+.ph-competition-editor-tip p{margin:0;color:#81758d;font-size:11px;line-height:1.65}
+body.app-competition.model-competition.change-form #content-main{width:100%;max-width:1120px;margin:0 auto}
+body.app-competition.model-competition.change-form .module{border:1px solid #e9e2f1;border-radius:15px;box-shadow:0 10px 30px #281a390c;margin-bottom:17px}
+body.app-competition.model-competition.change-form .module h2{display:flex;align-items:center;gap:9px;padding:17px 21px;background:linear-gradient(90deg,#fff,#fcfaff);color:#30213d;font-size:12px;font-weight:900;letter-spacing:.07em}
+body.app-competition.model-competition.change-form .module h2:before{content:"";width:7px;height:7px;border-radius:50%;background:#df6790;box-shadow:0 0 0 4px #fceaf1}
+body.app-competition.model-competition.change-form .form-row{padding:17px 22px;border-bottom:1px solid #f0edf4}
+body.app-competition.model-competition.change-form .aligned label{width:205px;padding:8px 15px 0 0;color:#41344d;font-size:12px;font-weight:800}
+body.app-competition.model-competition.change-form .aligned .form-row div.flex-container,
+body.app-competition.model-competition.change-form .aligned .form-row .related-widget-wrapper{margin-left:205px}
+body.app-competition.model-competition.change-form .form-row input:not([type=checkbox]):not([type=radio]),
+body.app-competition.model-competition.change-form .form-row select,
+body.app-competition.model-competition.change-form .form-row textarea{width:min(100%,560px);min-height:40px}
+body.app-competition.model-competition.change-form .form-row textarea{min-height:76px}
+body.app-competition.model-competition.change-form .form-row input[type=checkbox]{accent-color:#d94f7d;transform:scale(1.12)}
+body.app-competition.model-competition.change-form .help,body.app-competition.model-competition.change-form p.help{max-width:560px;margin:6px 0 0;color:#8c8198;font-size:10px;line-height:1.6}
+body.app-competition.model-competition.change-form .submit-row{position:sticky;bottom:8px;z-index:6;display:flex;flex-wrap:wrap;gap:9px;align-items:center;padding:14px 16px;border:1px solid #e8dfef;border-radius:13px;background:#ffffffed;backdrop-filter:blur(12px);box-shadow:0 10px 30px #25153620}
+body.app-competition.model-competition.change-form .submit-row input{min-height:39px;padding:10px 17px!important}
+body.app-competition.model-competition.change-form .deletelink-box{margin-left:auto}
+body.app-competition.model-competition.change-form .object-tools{margin-top:0}
+@media(max-width:700px){
+ body.app-competition.model-competition.change-form #content{padding:15px 10px 30px}
+ .ph-competition-editor-hero{align-items:flex-start;flex-direction:column;padding:21px}
+ .ph-competition-editor-mark{align-self:flex-start}
+ body.app-competition.model-competition.change-form #content-main{max-width:none}
+ body.app-competition.model-competition.change-form .aligned label{float:none;display:block;width:auto;padding:0 0 7px}
+ body.app-competition.model-competition.change-form .aligned .form-row div.flex-container,
+ body.app-competition.model-competition.change-form .aligned .form-row .related-widget-wrapper{margin-left:0}
+ body.app-competition.model-competition.change-form .form-row{padding:14px}
+ body.app-competition.model-competition.change-form .submit-row{position:static}
+}
