@@ -237,3 +237,57 @@ body.app-competition.model-competition.change-form .object-tools{margin-top:0}
  body.app-competition.model-competition.change-form .form-row{padding:14px}
  body.app-competition.model-competition.change-form .submit-row{position:static}
 }
+
+
+/* Weekly competition management list */
+body.app-competition.model-competition.change-list #content{max-width:1780px;padding-top:25px}
+.ph-competition-list-hero{display:flex;justify-content:space-between;align-items:center;gap:22px;padding:27px 31px;margin:0 0 19px;border:1px solid #49305e;border-radius:18px;background:radial-gradient(circle at 86% 0,#70418e 0,transparent 34%),linear-gradient(112deg,#171326 0%,#30203f 70%,#482442 100%);box-shadow:0 16px 38px #21152d20;color:#fff}
+.ph-competition-list-kicker{color:#f0a8c7;font-size:9px;font-weight:900;letter-spacing:.17em}
+.ph-competition-list-hero h1{margin:8px 0 6px!important;color:#fff!important;font-size:clamp(24px,3vw,32px)!important;font-weight:900!important;letter-spacing:-.04em}
+.ph-competition-list-hero p{max-width:700px;margin:0;color:#d8cadd;font-size:12px;line-height:1.7}
+.ph-competition-list-emblem{display:flex;align-items:center;gap:11px;padding:12px 15px;border:1px solid #ffffff25;border-radius:13px;background:#ffffff0d;color:#f5c6df}
+.ph-competition-list-emblem span{display:grid;place-items:center;width:42px;height:42px;border-radius:11px;background:#ffffff12;color:#ff9fc5;font-size:25px}
+.ph-competition-list-emblem small{font-size:9px;font-weight:900;line-height:1.6;letter-spacing:.12em}
+.ph-competition-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:0 0 18px}
+.ph-competition-metric{display:flex;align-items:center;gap:12px;min-width:0;padding:15px 16px;border:1px solid #eae4f0;border-radius:14px;background:#fff;box-shadow:0 8px 24px #2515360b}
+.ph-metric-symbol{display:grid;place-items:center;flex:0 0 39px;width:39px;height:39px;border-radius:12px;font-size:17px;font-weight:900}
+.ph-metric-symbol.violet{background:#f1ebfa;color:#7446a7}.ph-metric-symbol.green{background:#e8f8f0;color:#18805b}.ph-metric-symbol.amber{background:#fff5e8;color:#b16b24}.ph-metric-symbol.pink{background:#fff0f5;color:#c13d77}.ph-metric-symbol.gold{background:#fff6df;color:#a87922}
+.ph-competition-metric div{display:flex;flex-direction:column;gap:3px;min-width:0}
+.ph-competition-metric small{font-size:9px;color:#8c8198;font-weight:900;letter-spacing:.09em;white-space:nowrap}
+.ph-competition-metric strong{font-size:23px;color:#292038;line-height:1.1;font-variant-numeric:tabular-nums}
+.ph-competition-list-toolbar{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:14px 18px;margin:0 0 12px;border:1px solid #eae4f0;border-radius:12px;background:#fff}
+.ph-competition-list-toolbar>div{display:flex;align-items:center;gap:11px;white-space:nowrap}
+.ph-competition-list-toolbar strong{color:#2b2038;font-size:13px}
+.ph-competition-list-toolbar span,.ph-competition-list-toolbar p{color:#8d8297;font-size:10px}
+.ph-competition-list-toolbar p{margin:0;text-align:right}
+body.app-competition.model-competition.change-list #changelist{display:grid;grid-template-columns:minmax(0,1fr) 225px;gap:15px;align-items:start}
+body.app-competition.model-competition.change-list #changelist-form{min-width:0}
+body.app-competition.model-competition.change-list #changelist-filter{grid-column:2;grid-row:1;margin:0}
+body.app-competition.model-competition.change-list #toolbar{margin-bottom:12px;padding:13px;border:1px solid #eae4f0;border-radius:12px;background:#fff}
+body.app-competition.model-competition.change-list #changelist-form .results{overflow-x:auto;background:#fff}
+body.app-competition.model-competition.change-list #result_list{min-width:1050px}
+body.app-competition.model-competition.change-list #result_list thead th{padding:14px 12px;background:#f8f6fa;color:#756a82;font-size:9px;letter-spacing:.08em}
+body.app-competition.model-competition.change-list #result_list tbody tr{transition:background .15s}
+body.app-competition.model-competition.change-list #result_list tbody tr:hover{background:#fff4f8}
+body.app-competition.model-competition.change-list #result_list td{padding:14px 12px;vertical-align:middle;font-size:11px}
+body.app-competition.model-competition.change-list #result_list .field-week_number a{display:inline-block;padding:6px 9px;border-radius:8px;background:#f1eafa;color:#70449a;font-weight:900}
+body.app-competition.model-competition.change-list #result_list .field-matchup strong{color:#342440;font-size:11px}
+body.app-competition.model-competition.change-list #result_list .field-vote_count{font-weight:900;color:#68408d;font-variant-numeric:tabular-nums}
+body.app-competition.model-competition.change-list #result_list .field-countdown{white-space:nowrap}
+body.app-competition.model-competition.change-list #changelist .actions{padding:12px;border:1px solid #eae4f0;border-radius:10px;background:#fff}
+body.app-competition.model-competition.change-list #changelist-filter{margin-left:0}
+body.app-competition.model-competition.change-list .paginator{padding:14px 4px}
+@media(max-width:1150px){.ph-competition-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}body.app-competition.model-competition.change-list #changelist{grid-template-columns:1fr}body.app-competition.model-competition.change-list #changelist-filter{grid-column:1;grid-row:auto}}
+@media(max-width:700px){
+ body.app-competition.model-competition.change-list #content{padding:15px 10px 30px}
+ .ph-competition-list-hero{align-items:flex-start;flex-direction:column;padding:21px}
+ .ph-competition-list-emblem{align-self:flex-start}
+ .ph-competition-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .ph-competition-metric{padding:12px 10px;gap:8px}
+ .ph-metric-symbol{flex-basis:33px;width:33px;height:33px}
+ .ph-competition-metric strong{font-size:20px}
+ .ph-competition-list-toolbar{align-items:flex-start;flex-direction:column}
+ .ph-competition-list-toolbar>div{flex-wrap:wrap}
+ .ph-competition-list-toolbar p{text-align:left;line-height:1.6}
+ body.app-competition.model-competition.change-list #changelist-filter{width:auto}
+}
