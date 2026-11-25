@@ -140,3 +140,28 @@ class SurvivalProgressionTests(TestCase):
         with self.assertRaises(ValidationError):
             finalize_competition(self.round.pk)
         self.assertEqual(Competition.objects.count(), 1)
+
+    def test_expired_round_auto_completes_from_stats_request(self):
+        self.round.status = Competition.Status.OPEN
+        self.round.ends_at = timezone.now() - timedelta(seconds=2)
+        self.round.save(update_fields=["status", "ends_at"])
+        response = self.client.get(reverse("competition-stats", args=[self.round.pk]))
+        self.assertEqual(response.status_code, 200)
+        self.round.refresh_from_db()
+        self.loser.refresh_from_db()
+        self.assertEqual(self.round.status, Competition.Status.COMPLETED)
+        self.assertEqual(self.round.winner, self.survivor)
+        self.assertTrue(self.loser.is_eliminated)
+        self.assertEqual(response.json()["status"], Competition.Status.COMPLETED)
+
+    def test_expired_tied_round_stays_closed_for_admin_decision(self):
+        Vote.objects.create(competition=self.round, dj=self.loser, voter_hash="loser-2")
+        Vote.objects.create(competition=self.round, dj=self.loser, voter_hash="loser-3")
+        self.round.status = Competition.Status.OPEN
+        self.round.ends_at = timezone.now() - timedelta(seconds=2)
+        self.round.save(update_fields=["status", "ends_at"])
+        response = self.client.get(reverse("competition-stats", args=[self.round.pk]))
+        self.assertEqual(response.status_code, 200)
+        self.round.refresh_from_db()
+        self.assertEqual(self.round.status, Competition.Status.CLOSED)
+        self.assertIsNone(self.round.winner_id)
