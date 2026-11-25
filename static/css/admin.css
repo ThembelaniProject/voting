@@ -1,0 +1,121 @@
+/* Pheli FM 95.0 — Django admin visual system */
+:root {
+  --ph-ink: #171326;
+  --ph-ink-soft: #241d36;
+  --ph-plum: #302341;
+  --ph-pink: #e65378;
+  --ph-pink-dark: #c83d65;
+  --ph-gold: #f5bd62;
+  --ph-bg: #f5f3f8;
+  --ph-card: #ffffff;
+  --ph-muted: #777287;
+  --ph-line: #e9e5ef;
+  --ph-green: #17845b;
+  --ph-shadow: 0 12px 35px rgba(34, 23, 54, .07);
+}
+html, body { background: var(--ph-bg); }
+body, input, textarea, select, button { font-family: Inter, "Segoe UI", Arial, sans-serif; }
+#container { min-height: 100vh; }
+#header {
+  background: linear-gradient(110deg, #171326 0%, #2b1d3c 72%, #40213c 100%);
+  color: #fff; min-height: 68px; padding: 0 28px;
+  box-shadow: 0 5px 24px rgba(22, 14, 37, .18);
+}
+#branding { display:flex; align-items:center; min-height:68px; }
+#branding h1, #branding h1 a {
+  color:#fff !important; font-size:17px; font-weight:900; letter-spacing:.09em;
+  text-transform:uppercase; text-decoration:none;
+}
+#branding h1 a span { color:#ff8da8 !important; }
+#user-tools { color:#e9e3ef; padding: 23px 0; font-size:12px; }
+#user-tools a { color:#ffb2c3 !important; border-bottom:1px solid rgba(255,178,195,.35); }
+#user-tools a:hover { color:#fff !important; }
+div.breadcrumbs {
+  background:#fff; color:var(--ph-muted); padding:14px 30px;
+  border-bottom:1px solid var(--ph-line); font-size:12px;
+}
+div.breadcrumbs a { color:var(--ph-pink-dark) !important; }
+#content { padding:28px 32px 48px; max-width:1600px; margin:0 auto; }
+#content h1 { color:var(--ph-ink); font-size:27px; font-weight:850; letter-spacing:-.035em; margin:4px 0 22px; }
+#content-main, #content-related { min-width:0; }
+.module, .inline-group, .dashboard .module {
+  background:var(--ph-card); border:1px solid var(--ph-line); border-radius:14px;
+  box-shadow:var(--ph-shadow); overflow:hidden; margin-bottom:22px;
+}
+.module h2, .module caption, .inline-group h2 {
+  background:#fff; color:var(--ph-ink); border-bottom:1px solid var(--ph-line);
+  padding:16px 19px; font-size:13px; font-weight:850; letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.module table { border:0; }
+.module th, .module td { padding:13px 17px; border-bottom:1px solid #f0edf4; }
+.module tr:last-child th, .module tr:last-child td { border-bottom:0; }
+.module th a, .module td a { font-weight:650; }
+a:link, a:visited { color:var(--ph-pink-dark); }
+a:hover { color:#8f2449; }
+#content a.addlink, .addlink { color:var(--ph-green) !important; font-weight:750; }
+#content a.changelink, .changelink { font-weight:700; }
+#content a.deletelink, .deletelink { color:#c43e55 !important; }
+.button, input[type=submit], input[type=button], .submit-row input, a.button, button {
+  background:var(--ph-pink); color:#fff !important; border:0; border-radius:8px;
+  padding:10px 16px; font-weight:750; box-shadow:0 5px 12px rgba(230,83,120,.16);
+  transition:transform .16s ease, background .16s ease, box-shadow .16s ease;
+}
+.button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover, a.button:hover {
+  background:var(--ph-pink-dark); transform:translateY(-1px); box-shadow:0 8px 17px rgba(200,61,101,.2);
+}
+.button.default, input[type=submit].default, .submit-row input.default {
+  background:var(--ph-ink); color:#fff !important;
+}
+.submit-row { background:#faf9fc; border:1px solid var(--ph-line); border-radius:12px; padding:14px; }
+input, textarea, select, .vTextField, .vLargeTextField {
+  border:1px solid #ddd7e7 !important; border-radius:8px !important; padding:9px 11px !important;
+  background:#fff; color:var(--ph-ink); box-sizing:border-box;
+}
+input:focus, textarea:focus, select:focus {
+  border-color:var(--ph-pink) !important; outline:3px solid rgba(230,83,120,.13);
+}
+.selector, .selector-available, .selector-chosen { border-color:var(--ph-line); border-radius:10px; }
+#changelist { background:transparent; }
+#changelist-filter {
+  background:#fff; border:1px solid var(--ph-line); border-radius:13px;
+  box-shadow:var(--ph-shadow); margin-left:20px; overflow:hidden;
+}
+#changelist-filter h2 { background:var(--ph-ink); color:#fff; padding:15px; }
+#changelist-filter h3 { color:var(--ph-ink); font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
+#changelist-filter li.selected a { color:var(--ph-pink-dark); font-weight:850; }
+#changelist-form .results, #result_list { border:1px solid var(--ph-line); border-radius:13px; overflow:hidden; box-shadow:var(--ph-shadow); }
+#result_list thead th { background:#f8f6fa; color:#655e73; font-size:10px; text-transform:uppercase; letter-spacing:.08em; }
+#result_list tbody tr:nth-child(even) { background:#fbfafd; }
+#result_list tbody tr:hover { background:#fff2f5; }
+#result_list td, #result_list th { padding:13px 12px; border-bottom:1px solid #eeeaf3; }
+.paginator { padding:14px 4px; color:var(--ph-muted); }
+.paginator a { border-radius:6px; padding:5px 8px; background:#fff; border:1px solid var(--ph-line); }
+.object-tools a { border-radius:8px !important; }
+.messagelist { padding:0; margin:0 0 20px; }
+.messagelist li {
+  border-radius:10px; padding:13px 16px 13px 42px; margin:0 0 9px;
+  box-shadow:0 5px 15px rgba(34,23,54,.04);
+}
+.messagelist li.success { background:#e9f8f0; color:#176a49; }
+.messagelist li.warning { background:#fff6e6; color:#855b17; }
+.messagelist li.error { background:#fff0f1; color:#a52e45; }
+.help, p.help, form .help { color:var(--ph-muted); font-size:11px; line-height:1.6; }
+.form-row { padding:15px 18px; border-bottom:1px solid #f0edf4; }
+.aligned label { color:#4c455a; font-weight:700; }
+.selector h2 { background:#f8f6fa; color:var(--ph-ink); }
+#footer { padding:18px 30px; color:var(--ph-muted); }
+@media (max-width: 767px) {
+  #header { padding:0 15px; }
+  #branding h1, #branding h1 a { font-size:13px; letter-spacing:.04em; }
+  #user-tools { padding:12px 0; font-size:10px; }
+  #content { padding:20px 13px 35px; }
+  #content h1 { font-size:22px; }
+  #changelist-filter { margin:14px 0 0; width:auto; }
+  #changelist .actions { overflow-x:auto; }
+  .module { overflow-x:auto; }
+  .submit-row { display:flex; flex-wrap:wrap; gap:8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition:none !important; scroll-behavior:auto !important; }
+}
