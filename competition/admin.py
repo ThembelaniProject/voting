@@ -23,24 +23,29 @@ class DJAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "photo_preview")
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         field = super().formfield_for_dbfield(db_field, request, **kwargs)
+        if db_field.name == "photo" and field:
+            field.label = "DJ image"
+            field.help_text = "Click Choose File / Browse to select a photo from your device (JPG, PNG or WebP)."
+            field.widget.attrs["accept"] = "image/jpeg,image/png,image/webp"
         if db_field.name == "photo_url" and field:
-            field.label = "DJ photo URL"
-            field.help_text = "Paste a direct, publicly accessible image URL (for example, an image ending in .jpg, .png or .webp)."
+            field.label = "Legacy photo URL (optional)"
+            field.help_text = "Only use this if you cannot upload a file. Uploaded DJ images take priority."
             field.widget.attrs["placeholder"] = "https://example.com/dj-photo.jpg"
         return field
 
     @admin.display(description="Photo preview")
     def photo_preview(self, obj):
-        if obj and obj.photo_url:
+        if obj and (obj.photo or obj.photo_url):
+            image_source = obj.photo.url if obj.photo else obj.photo_url
             return format_html(
                 '<img src="{}" alt="{}" style="max-width:220px;max-height:220px;object-fit:cover;border-radius:12px;border:1px solid #ddd;" />',
-                obj.photo_url,
+                image_source,
                 obj.name,
             )
         return "Add a DJ photo URL above to see a preview."
 
     fieldsets = (
-        ("DJ profile", {"fields": ("name", "bio", "photo_url", "photo_preview")}),
+        ("DJ profile", {"fields": ("name", "bio", "photo", "photo_url", "photo_preview")}),
         ("Competition status", {"fields": ("is_active", "is_eliminated", "is_champion")}),
         ("Record", {"fields": ("created_at",)}),
     )
