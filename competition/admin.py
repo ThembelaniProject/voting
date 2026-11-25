@@ -70,7 +70,19 @@ class DJAdmin(admin.ModelAdmin):
 
 @admin.register(Competition)
 class CompetitionAdmin(admin.ModelAdmin):
+    change_list_template = "admin/competition/competition/change_list.html"
     change_form_template = "admin/competition/competition/change_form.html"
+
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context["competition_dashboard"] = {
+            "total": Competition.objects.count(),
+            "draft": Competition.objects.filter(status=Competition.Status.DRAFT).count(),
+            "open": Competition.objects.filter(status=Competition.Status.OPEN).count(),
+            "completed": Competition.objects.filter(status=Competition.Status.COMPLETED).count(),
+            "votes": Vote.objects.count(),
+        }
+        return super().changelist_view(request, extra_context=extra_context)
     list_display = ("week_number", "matchup", "status_badge", "vote_count", "countdown", "winner", "eliminated_dj", "starts_at", "ends_at")
     list_filter = ("status", "is_final")
     search_fields = ("title", "dj_one__name", "dj_two__name", "winner__name")
