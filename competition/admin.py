@@ -6,6 +6,11 @@ from .models import Competition, DJ, Vote
 from .services import finalize_competition
 
 
+admin.site.site_header = "Pheli FM 95.0 · Competition Control"
+admin.site.site_title = "Pheli FM Admin"
+admin.site.index_title = "Manage the DJ Survival Challenge"
+
+
 @admin.register(DJ)
 class DJAdmin(admin.ModelAdmin):
     list_display = ("name", "is_active", "is_eliminated", "is_champion", "created_at")
@@ -13,6 +18,13 @@ class DJAdmin(admin.ModelAdmin):
     search_fields = ("name", "bio")
     list_editable = ("is_active",)
     ordering = ("name",)
+    list_per_page = 20
+    readonly_fields = ("created_at",)
+    fieldsets = (
+        ("DJ profile", {"fields": ("name", "bio", "photo_url")}),
+        ("Competition status", {"fields": ("is_active", "is_eliminated", "is_champion")}),
+        ("Record", {"fields": ("created_at",)}),
+    )
 
 
 @admin.register(Competition)
@@ -24,8 +36,16 @@ class CompetitionAdmin(admin.ModelAdmin):
     list_filter = ("status", "is_final")
     search_fields = ("title", "dj_one__name", "dj_two__name", "winner__name")
     ordering = ("-week_number",)
-    readonly_fields = ("winner", "eliminated_dj")
+    date_hierarchy = "starts_at"
+    list_per_page = 20
+    readonly_fields = ("winner", "eliminated_dj", "created_at")
     actions = ("open_voting", "close_voting", "finalize_and_progress")
+    fieldsets = (
+        ("Weekly matchup", {"fields": ("week_number", "title", "dj_one", "dj_two")}),
+        ("Voting schedule", {"fields": ("status", "starts_at", "ends_at")}),
+        ("Next week setup", {"fields": ("next_challenger", "is_final")}),
+        ("Final result", {"fields": ("winner", "eliminated_dj", "created_at")}),
+    )
 
     @admin.display(description="Recorded votes")
     def vote_count(self, obj):
@@ -95,6 +115,7 @@ class VoteAdmin(admin.ModelAdmin):
     search_fields = ("dj__name",)
     date_hierarchy = "created_at"
     ordering = ("-created_at",)
+    list_per_page = 50
     readonly_fields = ("competition", "dj", "voter_hash", "created_at")
 
     def has_add_permission(self, request):
