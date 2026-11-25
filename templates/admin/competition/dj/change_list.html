@@ -1,0 +1,18 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+{% block content_title %}
+<div class="ph-dj-page-heading">
+  <div><span class="ph-dj-kicker">PHELI FM 95.0 · TALENT ROSTER</span><h1>DJ Management</h1><p>Manage artist profiles, photos and competition eligibility.</p></div>
+  <div class="ph-dj-heading-note"><span>♫</span> YOUR LINE-UP. YOUR SOUND.</div>
+</div>
+{% endblock %}
+{% block content %}
+<div class="ph-dj-overview">
+  <div class="ph-dj-metric"><span class="ph-dj-metric-icon pink">♫</span><div><small>TOTAL DJs</small><strong>{{ dj_dashboard.total }}</strong></div></div>
+  <div class="ph-dj-metric"><span class="ph-dj-metric-icon green">✓</span><div><small>ACTIVE DJs</small><strong>{{ dj_dashboard.active }}</strong></div></div>
+  <div class="ph-dj-metric"><span class="ph-dj-metric-icon amber">↘</span><div><small>ELIMINATED</small><strong>{{ dj_dashboard.eliminated }}</strong></div></div>
+  <div class="ph-dj-metric"><span class="ph-dj-metric-icon violet">♛</span><div><small>CHAMPIONS</small><strong>{{ dj_dashboard.champions }}</strong></div></div>
+</div>
+<div class="ph-dj-toolbar"><div><strong>DJ roster</strong><span>{{ cl.result_count }} profile{{ cl.result_count|pluralize }} found</span></div><span class="ph-dj-toolbar-hint">Select a DJ to edit their profile and image.</span></div>
+{{ block.super }}
+{% endblock %}
