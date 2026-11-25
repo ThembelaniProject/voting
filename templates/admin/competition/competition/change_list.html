@@ -1,0 +1,29 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+
+{% block content_title %}
+<section class="ph-competition-list-hero">
+  <div>
+    <span class="ph-competition-list-kicker">PHELI FM 95.0 · SEASON CONTROL</span>
+    <h1>Weekly competitions</h1>
+    <p>Manage every DJ showdown, monitor voting activity and track the journey to the season champion.</p>
+  </div>
+  <div class="ph-competition-list-emblem"><span>♫</span><small>DJ SURVIVAL<br>CHALLENGE</small></div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="ph-competition-metrics">
+  <div class="ph-competition-metric"><span class="ph-metric-symbol violet">▤</span><div><small>ALL ROUNDS</small><strong>{{ competition_dashboard.total }}</strong></div></div>
+  <div class="ph-competition-metric"><span class="ph-metric-symbol green">●</span><div><small>VOTING OPEN</small><strong>{{ competition_dashboard.open }}</strong></div></div>
+  <div class="ph-competition-metric"><span class="ph-metric-symbol amber">◷</span><div><small>DRAFT ROUNDS</small><strong>{{ competition_dashboard.draft }}</strong></div></div>
+  <div class="ph-competition-metric"><span class="ph-metric-symbol pink">✓</span><div><small>COMPLETED</small><strong>{{ competition_dashboard.completed }}</strong></div></div>
+  <div class="ph-competition-metric ph-votes-metric"><span class="ph-metric-symbol gold">♡</span><div><small>TOTAL VOTES</small><strong>{{ competition_dashboard.votes }}</strong></div></div>
+</div>
+
+<div class="ph-competition-list-toolbar">
+  <div><strong>Competition schedule</strong><span>{{ cl.result_count }} round{{ cl.result_count|pluralize }} in this view</span></div>
+  <p>Use the filters to find rounds by status or final-round setting. Select a round to edit its matchup and schedule.</p>
+</div>
+{{ block.super }}
+{% endblock %}
