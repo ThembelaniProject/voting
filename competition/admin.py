@@ -70,6 +70,7 @@ class DJAdmin(admin.ModelAdmin):
 
 @admin.register(Competition)
 class CompetitionAdmin(admin.ModelAdmin):
+    change_form_template = "admin/competition/competition/change_form.html"
     list_display = ("week_number", "matchup", "status_badge", "vote_count", "countdown", "winner", "eliminated_dj", "starts_at", "ends_at")
     list_filter = ("status", "is_final")
     search_fields = ("title", "dj_one__name", "dj_two__name", "winner__name")
