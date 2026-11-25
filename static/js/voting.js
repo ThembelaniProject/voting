@@ -1,5 +1,6 @@
 (() => {
   const battle = document.getElementById('battle');
+  if (!battle) return;
   const competitionId = battle.dataset.competitionId;
   const votingOpenOnPage = battle.dataset.votingOpen === 'true';
   const deadline = Date.parse(battle.dataset.deadline || '') || 0;
@@ -8,6 +9,7 @@
   let alreadyVoted = battle.dataset.alreadyVoted === 'true';
   let votingOpen = votingOpenOnPage;
   let submitting = false;
+  let completed = false;
 
   function csrfToken() {
     const entry = document.cookie.split('; ').find(row => row.startsWith('csrftoken='));
@@ -27,25 +29,34 @@
       $('dj2-bar').style.width = `${data.dj2_percent || 0}%`;
       if (typeof data.voting_open === 'boolean') votingOpen = data.voting_open;
       if (typeof data.already_voted === 'boolean') alreadyVoted = data.already_voted;
+      completed = data.status === 'completed';
+      if (completed && data.winner) {
+        $('vote-message').textContent = `WEEK COMPLETED: ${data.winner} wins with the most votes. ${data.eliminated || 'The other DJ'} is eliminated.`;
+        $('vote-status').textContent = `Competition completed · Winner: ${data.winner}`;
+        const pill = document.querySelector('.week-pill');
+        if (pill) pill.textContent = `WEEK ${battle.dataset.week} · COMPLETED`;
+      }
     }
 
     document.querySelectorAll('[data-vote]').forEach(button => {
-      button.disabled = submitting || alreadyVoted || !votingOpen || !competitionId;
-      if (alreadyVoted) button.textContent = 'VOTE ALREADY SUBMITTED';
+      button.disabled = submitting || alreadyVoted || !votingOpen || !competitionId || completed;
+      if (completed) button.textContent = 'WEEK COMPLETED';
+      else if (alreadyVoted) button.textContent = 'VOTE ALREADY SUBMITTED';
       else if (!votingOpen) button.textContent = 'VOTING IS NOT OPEN';
-      else if (button.dataset.vote === 'dj1') button.textContent = 'I WANT THIS DJ TO STAY ↗';
       else button.textContent = 'I WANT THIS DJ TO STAY ↗';
     });
 
-    if (alreadyVoted) {
-      $('vote-message').textContent = 'Thank you. Your vote has been recorded for this weekly competition.';
-      $('vote-status').textContent = 'Your vote is recorded';
-    } else if (!votingOpen) {
-      $('vote-message').textContent = 'Voting is not open right now. Check back when Pheli FM opens the round.';
-      $('vote-status').textContent = 'Voting closed';
-    } else {
-      $('vote-message').textContent = 'Choose the DJ you want to keep in the competition.';
-      $('vote-status').textContent = 'Live results · updates automatically';
+    if (!completed) {
+      if (alreadyVoted) {
+        $('vote-message').textContent = 'Thank you. Your vote has been recorded for this weekly competition.';
+        $('vote-status').textContent = 'Your vote is recorded';
+      } else if (!votingOpen) {
+        $('vote-message').textContent = 'Voting is not open right now. Check back when Pheli FM opens the next round.';
+        $('vote-status').textContent = 'Voting closed';
+      } else {
+        $('vote-message').textContent = 'Choose the DJ you want to keep in the competition.';
+        $('vote-status').textContent = 'Live results · updates automatically';
+      }
     }
   }
 
@@ -68,7 +79,7 @@
   }
 
   async function submitVote(choice, button) {
-    if (!competitionId || submitting || alreadyVoted || !votingOpen) return;
+    if (!competitionId || submitting || alreadyVoted || !votingOpen || completed) return;
     submitting = true;
     render(null);
     button.textContent = 'SUBMITTING VOTE…';
@@ -90,7 +101,6 @@
         throw new Error(result.error || 'Your vote could not be submitted.');
       }
       alreadyVoted = true;
-      votingOpen = true;
       render(result);
       $('vote-confirm').hidden = false;
       $('vote-confirm').textContent = result.message;
@@ -120,18 +130,21 @@
     if (!left && votingOpen) {
       votingOpen = false;
       render(null);
+      refreshStats();
     }
   }
 
   const menu = document.querySelector('.menu-toggle');
-  menu.addEventListener('click', () => {
-    const open = document.querySelector('.site-header').classList.toggle('menu-open');
-    menu.setAttribute('aria-expanded', String(open));
-  });
-  document.querySelectorAll('.site-header nav a').forEach(link => link.addEventListener('click', () => {
-    document.querySelector('.site-header').classList.remove('menu-open');
-    menu.setAttribute('aria-expanded', 'false');
-  }));
+  if (menu) {
+    menu.addEventListener('click', () => {
+      const open = document.querySelector('.site-header').classList.toggle('menu-open');
+      menu.setAttribute('aria-expanded', String(open));
+    });
+    document.querySelectorAll('.site-header nav a').forEach(link => link.addEventListener('click', () => {
+      document.querySelector('.site-header').classList.remove('menu-open');
+      menu.setAttribute('aria-expanded', 'false');
+    }));
+  }
 
   refreshStats();
   tick();
