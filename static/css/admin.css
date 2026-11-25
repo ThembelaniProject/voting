@@ -291,3 +291,67 @@ body.app-competition.model-competition.change-list .paginator{padding:14px 4px}
  .ph-competition-list-toolbar p{text-align:left;line-height:1.6}
  body.app-competition.model-competition.change-list #changelist-filter{width:auto}
 }
+
+
+/* Fix Django admin bulk-action selector: keep the selected action readable */
+#changelist .actions{display:flex!important;align-items:center!important;flex-wrap:wrap;gap:10px;min-height:58px;overflow:visible!important}
+#changelist .actions label{display:inline-flex!important;align-items:center;gap:7px;margin:0!important;color:#51445f!important;font-size:11px!important;font-weight:800!important;white-space:nowrap}
+#changelist .actions select,
+#changelist .actions select.action-select{
+  display:inline-block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative!important;
+  z-index:2;
+  width:auto!important;
+  min-width:220px!important;
+  max-width:min(100%,360px);
+  height:40px!important;
+  min-height:40px!important;
+  margin:0!important;
+  padding:8px 38px 8px 12px!important;
+  border:1px solid #d9cde5!important;
+  border-radius:9px!important;
+  background-color:#fff!important;
+  color:#30213f!important;
+  -webkit-text-fill-color:#30213f!important;
+  font:700 12px/1.3 Inter,"Segoe UI",Arial,sans-serif!important;
+  appearance:auto!important;
+  -webkit-appearance:menulist!important;
+  box-shadow:0 2px 7px #281a390c!important;
+  cursor:pointer!important;
+}
+#changelist .actions select option{
+  background:#fff!important;
+  color:#30213f!important;
+  padding:8px!important;
+  font-weight:600!important;
+}
+#changelist .actions select:focus{
+  outline:3px solid #e6537826!important;
+  border-color:#d94f7d!important;
+}
+#changelist .actions button,
+#changelist .actions input[type=submit]{
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  min-height:39px!important;
+  margin:0!important;
+  padding:9px 16px!important;
+  white-space:nowrap;
+}
+#changelist .actions .action-counter,
+#changelist .actions span.action-counter{
+  color:#81758e!important;
+  font-size:10px!important;
+  font-weight:700!important;
+}
+@media(max-width:600px){
+  #changelist .actions{align-items:stretch!important;flex-direction:column}
+  #changelist .actions label{align-self:flex-start}
+  #changelist .actions select,
+  #changelist .actions select.action-select{width:100%!important;max-width:100%;min-width:0!important}
+  #changelist .actions button,
+  #changelist .actions input[type=submit]{width:100%}
+}
