@@ -12,7 +12,7 @@
 </div>
 <div class="ph-columns">
 <section class="ph-card"><div class="ph-heading"><div><small>LIVE MATCHUP</small><h2>Current competition</h2></div>{% if d.current %}<label class="ph-live">● LIVE · WEEK {{ d.current.week_number }}</label>{% else %}<label class="ph-idle">NO LIVE ROUND</label>{% endif %}</div>
-{% if d.current %}<div class="ph-versus">{% for dj in d.current.dj_one,d.current.dj_two %}{% endfor %}
+{% if d.current %}<div class="ph-versus">
 <div class="ph-person">{% if d.current.dj_one.photo %}<img src="{{ d.current.dj_one.photo.url }}" alt="">{% elif d.current.dj_one.photo_url %}<img src="{{ d.current.dj_one.photo_url }}" alt="">{% else %}<i>{{ d.current.dj_one.name|first }}</i>{% endif %}<b>{{ d.current.dj_one.name }}</b><span>{{ d.current.dj_one_vote_count }} votes</span></div><strong>VS</strong>
 <div class="ph-person">{% if d.current.dj_two.photo %}<img src="{{ d.current.dj_two.photo.url }}" alt="">{% elif d.current.dj_two.photo_url %}<img src="{{ d.current.dj_two.photo_url }}" alt="">{% else %}<i>{{ d.current.dj_two.name|first }}</i>{% endif %}<b>{{ d.current.dj_two.name }}</b><span>{{ d.current.dj_two_vote_count }} votes</span></div></div>
 <div class="ph-timer">TIME REMAINING <strong data-ends-at="{{ d.current.ends_at|date:'c' }}">--:--:--</strong></div><p class="ph-total">{{ d.current.total_votes }} votes cast this week</p><a class="ph-primary" href="{% url 'admin:competition_competition_change' d.current.pk %}">Manage competition →</a>
