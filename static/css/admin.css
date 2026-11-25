@@ -355,3 +355,130 @@ body.app-competition.model-competition.change-list .paginator{padding:14px 4px}
   #changelist .actions button,
   #changelist .actions input[type=submit]{width:100%}
 }
+
+
+/* Pheli FM admin buttons: solid surfaces, clear labels and reliable stacking */
+body .submit-row,
+body #changelist .actions,
+body .object-tools,
+body .related-widget-wrapper {
+  isolation:isolate;
+}
+body #content a.button,
+body #content button,
+body #content input[type=submit],
+body #content input[type=button],
+body #content .submit-row input,
+body #content .object-tools a,
+body #content .addlink,
+body #content .changelink,
+body #content .deletelink,
+body #content .historylink,
+body #content .viewlink,
+body #content .related-widget-wrapper-link,
+body #changelist .actions button,
+body #changelist .actions input[type=submit] {
+  position:relative!important;
+  z-index:3!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  min-height:40px!important;
+  padding:10px 17px!important;
+  border:1px solid transparent!important;
+  border-radius:10px!important;
+  background:#68408d!important;
+  background-image:linear-gradient(135deg,#8053a7 0%,#593477 100%)!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  font-family:Inter,"Segoe UI",Arial,sans-serif!important;
+  font-size:11px!important;
+  font-weight:800!important;
+  line-height:1.25!important;
+  letter-spacing:.01em!important;
+  text-align:center!important;
+  text-decoration:none!important;
+  text-shadow:none!important;
+  white-space:normal!important;
+  opacity:1!important;
+  visibility:visible!important;
+  box-shadow:0 5px 13px #49305e25!important;
+  cursor:pointer!important;
+  transition:transform .18s ease,box-shadow .18s ease,filter .18s ease!important;
+}
+body #content a.button:hover,
+body #content button:hover,
+body #content input[type=submit]:hover,
+body #content input[type=button]:hover,
+body #content .submit-row input:hover,
+body #content .object-tools a:hover,
+body #content .addlink:hover,
+body #content .changelink:hover,
+body #content .deletelink:hover,
+body #content .historylink:hover,
+body #content .viewlink:hover,
+body #content .related-widget-wrapper-link:hover,
+body #changelist .actions button:hover,
+body #changelist .actions input[type=submit]:hover {
+  filter:brightness(1.08)!important;
+  transform:translateY(-1px);
+  box-shadow:0 8px 18px #49305e35!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+body #content a.button:focus-visible,
+body #content button:focus-visible,
+body #content input[type=submit]:focus-visible,
+body #content .object-tools a:focus-visible {
+  outline:3px solid #e8b3cf!important;
+  outline-offset:3px!important;
+}
+body #content .submit-row input.default,
+body #content input.default,
+body #content .object-tools a.addlink,
+body #content .addlink {
+  background:#d94f7d!important;
+  background-image:linear-gradient(135deg,#ee759d 0%,#c63870 100%)!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+body #content .deletelink,
+body #content .deletelink-box a {
+  background:#fff!important;
+  background-image:none!important;
+  border-color:#f0cbd5!important;
+  color:#b52e50!important;
+  -webkit-text-fill-color:#b52e50!important;
+  box-shadow:none!important;
+}
+body #content .deletelink:hover,
+body #content .deletelink-box a:hover {
+  background:#fff0f3!important;
+  color:#a51f42!important;
+  -webkit-text-fill-color:#a51f42!important;
+}
+/* Keep button captions above nearby decorative elements; never let labels bleed through. */
+body #content .submit-row input,
+body #content .object-tools a,
+body #content .actions button,
+body #content .actions input[type=submit] {
+  overflow:hidden!important;
+  isolation:isolate;
+  text-decoration:none!important;
+}
+body #content .submit-row input::before,
+body #content .submit-row input::after,
+body #content .object-tools a::before,
+body #content .object-tools a::after,
+body #content .actions button::before,
+body #content .actions button::after {
+  pointer-events:none;
+}
+@media(max-width:700px){
+  body #content .submit-row{gap:8px!important}
+  body #content .submit-row input,
+  body #content .object-tools a,
+  body #changelist .actions button,
+  body #changelist .actions input[type=submit]{min-height:42px!important}
+}
